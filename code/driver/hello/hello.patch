@@ -1,0 +1,28 @@
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1338,6 +1338,8 @@ source "drivers/uio/Kconfig"
+ 
+ source "drivers/staging/Kconfig"
+ 
++source "drivers/hello/Kconfig"
++
+ endmenu
+ 
+ source "fs/Kconfig"
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -111,4 +111,6 @@ source "drivers/xen/Kconfig"
+ source "drivers/staging/Kconfig"
+ 
+ source "drivers/platform/Kconfig"
++
++source "drivers/hello/Kconfig"
+ endmenu
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -106,4 +106,5 @@ obj-$(CONFIG_OF)		+= of/
+ obj-$(CONFIG_SSB)		+= ssb/
+ obj-$(CONFIG_VIRTIO)		+= virtio/
+ obj-$(CONFIG_STAGING)		+= staging/
++obj-$(CONFIG_HELLO)		+= hello/
+ obj-y				+= platform/
