@@ -1,0 +1,17 @@
+1\ 驱动加入内核编译
+   所需文件：
+	hello.c, hello.h
+	Kconfig
+	Makefile
+
+   同时参照hello.path修改文件
+	arch/arm/Kconfig
+	drivers/Kconfig
+	drivers/Makefile
+
+2\ 驱动单独编译
+   所需文件
+	hello.c, hello.h
+	Makefile.mk (编译时，修改成Makefile)
+
+   同时，内核要使能 “Enable loadable module support”
