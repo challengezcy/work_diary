@@ -1,0 +1,29 @@
+1\ 在Ubuntu为Android硬件抽象层（HAL）模块编写JNI方法提供Java访问硬件服务接口
+   Ref: http://blog.csdn.net/luoshengyang/article/details/6575988
+
+2\ com_android_server_HelloService.cpp
+   cp this file to frameworks/base/services/jni
+
+   注意文件的命令方法，com_android_server前缀表示的是包名，表示硬件服务
+   HelloService是放在frameworks/base/services/java目录下的
+   com/android/server目录的，即存在一个命令为
+   com.android.server.HelloService的类。
+
+   注意，在hello_init函数中，通过Android硬件抽象层提供的hw_get_module方
+   法来加载模块ID为HELLO_HARDWARE_MODULE_ID的硬件抽象层模块，其中，
+   HELLO_HARDWARE_MODULE_ID是在<hardware/hello.h>中定义的。Android硬件
+   抽象层会根据HELLO_HARDWARE_MODULE_ID的值在Android系统的
+   /system/lib/hw目录中找到相应的模块，然后加载起来，并且返回
+   hw_module_t接口给调用者使用。在jniRegisterNativeMethods函数中，第二
+   个参数的值必须对应HelloService所在的包的路径，即
+   com.android.server.HelloService。
+
+3\ hello_jni_patch
+   patch file frameworks/base/services/jni/onload.cpp
+   patch file frameworks/base/services/jni/Android.mk
+
+   修改onload.cpp文件,这样，在Android系统初始化时，就会自动加载该JNI方
+   法调用表。
+
+4\ compile:
+   mmm frameworks/base/services/jni; make snod

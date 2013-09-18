@@ -1,0 +1,28 @@
+--- a/services/jni/Android.mk
++++ b/services/jni/Android.mk
+@@ -15,6 +15,7 @@ LOCAL_SRC_FILES:= \
+     com_android_server_UsbHostManager.cpp \
+     com_android_server_VibratorService.cpp \
+     com_android_server_location_GpsLocationProvider.cpp \
++    com_android_server_HelloService.cpp \
+     com_android_server_connectivity_Vpn.cpp \
+     onload.cpp
+ 
+--- a/services/jni/onload.cpp
++++ b/services/jni/onload.cpp
+@@ -33,6 +33,7 @@ int register_android_server_UsbHostManager(JNIEnv* env);
+ int register_android_server_VibratorService(JNIEnv* env);
+ int register_android_server_SystemServer(JNIEnv* env);
+ int register_android_server_location_GpsLocationProvider(JNIEnv* env);
++int register_android_server_HelloService(JNIEnv* env);
+ int register_android_server_connectivity_Vpn(JNIEnv* env);
+ };
+ 
+@@ -62,6 +63,7 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
+     register_android_server_VibratorService(env);
+     register_android_server_SystemServer(env);
+     register_android_server_location_GpsLocationProvider(env);
++    register_android_server_HelloService(env);
+     register_android_server_connectivity_Vpn(env);
+ 
+     return JNI_VERSION_1_4;

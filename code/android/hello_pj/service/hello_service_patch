@@ -1,0 +1,47 @@
+--- a/Android.mk
++++ b/Android.mk
+@@ -144,6 +144,7 @@ LOCAL_SRC_FILES += \
+ 	core/java/android/os/IUpdateLock.aidl \
+         core/java/android/os/IUserManager.aidl \
+ 	core/java/android/os/IVibratorService.aidl \
++	core/java/android/os/IHelloService.aidl \
+ 	core/java/android/service/dreams/IDreamManager.aidl \
+ 	core/java/android/service/dreams/IDreamService.aidl \
+ 	core/java/android/service/wallpaper/IWallpaperConnection.aidl \
+--- a/api/current.txt
++++ b/api/current.txt
+@@ -16111,6 +16111,18 @@ package android.os {
+     method public abstract void binderDied();
+   }
+ 
++  public abstract interface IHelloService implements android.os.IInterface {
++    method public abstract int getVal() throws android.os.RemoteException;
++    method public abstract void setVal(int) throws android.os.RemoteException;
++  }
++
++  public static abstract class IHelloService.Stub extends android.os.Binder implements android.os.IHelloService {
++    ctor public IHelloService.Stub();
++    method public android.os.IBinder asBinder();
++    method public static android.os.IHelloService asInterface(android.os.IBinder);
++    method public boolean onTransact(int, android.os.Parcel, android.os.Parcel, int) throws android.os.RemoteException;
++  }
++
+   public abstract interface IInterface {
+     method public abstract android.os.IBinder asBinder();
+   }
+--- a/services/java/com/android/server/SystemServer.java
++++ b/services/java/com/android/server/SystemServer.java
+@@ -704,6 +704,13 @@ class ServerThread extends Thread {
+             }
+ 
+             try {
++                Slog.i(TAG, "Hello Service");
++                ServiceManager.addService("hello", new HelloService());
++            } catch (Throwable e) {
++                Slog.e(TAG, "Failure starting Hello Service", e);
++            }
++
++            try {
+                 // need to add this service even if SamplingProfilerIntegration.isEnabled()
+                 // is false, because it is this service that detects system property change and
+                 // turns on SamplingProfilerIntegration. Plus, when sampling profiler doesn't work,

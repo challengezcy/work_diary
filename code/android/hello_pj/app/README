@@ -1,0 +1,11 @@
+1\ 在Ubuntu上为Android系统内置Java应用程序测试Application Frameworks层的硬件服务 
+   Ref: http://blog.csdn.net/luoshengyang/article/details/6580267
+
+2\ 使用eclipse建立工程，修改以下文件：
+   MainActivity.java, activity_main.xml, string.xml
+
+3\ 将整个目录复制到packages/experimental/ 目录下
+
+4\ 添加文件Android.mk
+
+5\ mmm packages/experimental/Hello; make snod

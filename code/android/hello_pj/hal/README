@@ -1,0 +1,33 @@
+1\ 在Ubuntu上为Android增加硬件抽象层（HAL）模块访问Linux内核驱动程序  
+   Ref: http://blog.csdn.net/luoshengyang/article/details/6573809 
+
+2\ hello.h: [cp hello.h to]
+   hardware/libhardware/include/hardware/hello.h
+   按照Android硬件抽象层规范的要求，分别定义模块ID、模块结构体以及硬件
+   接口结构体。
+
+3\ hello.c: [mkdir hello; cp hello.c to]
+   hardware/libhardware/modules/hello/
+   实例变量名必须为HAL_MODULE_INFO_SYM，tag也必须为HARDWARE_MODULE_TAG，
+   这是Android硬件抽象层规范规定的。
+
+NOTICE:
+   DEVICE_NAME定义为"/dev/hello"。由于设备文件是在内核驱动里面通过
+   device_create创建的，而device_create创建的设备文件默认只有root用户可
+   读写，而hello_device_open一般是由上层APP来调用的，这些APP一般不具有
+   root权限，这时候就导致打开设备文件失败：
+      Hello Stub: failed to open /dev/hello -- Permission denied.
+   解决办法是类似于Linux的udev规则，打开Android源代码工程目录下，进入到
+   system/core/rootdir目录，里面有一个名为ueventd.rc文件，往里面添加一
+   行：
+      /dev/hello 0666 root root
+
+4\ Android.mk: [mkdir hello; cp Android.mk to]
+   hardware/libhardware/modules/hello/
+   LOCAL_MODULE的定义规则，hello后面跟有default，hello.default能够保证
+   我们的模块总能被硬象抽象层加载到。
+
+5\ compile:
+   mmm hardware/libhardware/modules/hello; make snod
+   编译成功后，就可以在out/target/product/generic/system/lib/hw目录下
+   看到hello.default.so文件了。
