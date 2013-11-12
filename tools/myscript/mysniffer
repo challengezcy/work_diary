@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]; then
+	echo "\tUsage: \n\t\tsudo ./mysniffer interface channel \n"
+	exit
+fi
+
+newintf=$1.mon
+state=`ifconfig | grep mon`
+
+if [ -z "$state" ]; then
+	sudo iw $1 interface add $newintf type monitor
+	sudo ifconfig $1 down
+else
+	echo "$newinif has created.\n"
+fi
+sudo ifconfig $newintf up
+sudo iw $newintf set channel $2
+
+sudo wireshark
